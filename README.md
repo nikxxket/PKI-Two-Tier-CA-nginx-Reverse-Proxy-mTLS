@@ -20,28 +20,26 @@
 
 Структура проекта:
 
-├── certs/ # Сертификаты и ключи
-│ ├── root.crt / root.key # Root CA
-│ ├── intermediate.* # Intermediate CA
-│ ├── nginx.* # Серверный сертификат + цепочка
-│ ├── client1.* # Клиентский сертификат (для mTLS)
-│ └── ca-bundle.crt # Бандл Intermediate + Root (для проверки клиента)
-│
-├── scripts/ # Скрипты автоматизации
-│ ├── generate_certs.sh # Создание всей PKI‑инфраструктуры
-│ └── client_cert.sh # Генерация клиентского сертификата
-│
-├── backend/ # Тестовые микросервисы
-│ ├── api/ # API‑сервис (порт 3001)
-│ │ ├── index.html
-│ │ └── server.py
-│ ├── app/ # Основное приложение (порт 3002)
-│ │ ├── index.html
-│ │ └── server.py
-│ ├── logs/ # Логи сервисов
-│ └── start.sh # Одновременный запуск обоих бэкендов
-│
-└── nginx-config/ # Конфигурация nginx (lab.local.conf)
+- **LB4/**
+  - **certs/** *(Сертификаты и ключи)*
+    - `root.crt` / `root.key` – Root CA
+    - `intermediate.*` – Intermediate CA
+    - `nginx.*` – Серверный сертификат + цепочка
+    - `client1.*` – Клиентский сертификат (для mTLS)
+    - `ca-bundle.crt` – Бандл Intermediate + Root
+  - **scripts/** *(Скрипты автоматизации)*
+    - `generate_certs.sh` – Создание всей PKI‑инфраструктуры
+    - `client_cert.sh` – Генерация клиентского сертификата
+  - **backend/** *(Тестовые микросервисы)*
+    - **api/** *(API‑сервис, порт 3001)*
+      - `index.html`
+      - `server.py`
+    - **app/** *(Основное приложение, порт 3002)*
+      - `index.html`
+      - `server.py`
+    - `logs/` – Логи сервисов
+    - `start.sh` – Запуск обоих бэкендов
+  - **nginx-config/** – Конфигурация nginx (`lab.local.conf`)
 
 Генерация сертификатов:
 
@@ -58,7 +56,7 @@ chmod +x scripts/*.sh
 nginx проксирует запросы в зависимости от пути:
 
 1) https://lab.local/ - http://127.0.0.1:3002/ -	Основное приложение;
-2) https://lab.local/api/	http://127.0.0.1:3001/	API‑сервис (JSON);
+2) https://lab.local/api/ - http://127.0.0.1:3001/ - API‑сервис (JSON);
 3) Оба бэкенда работают на 127.0.0.1 (одна подсеть) и могут обмениваться HTTP‑запросами.
 
 Mutual TLS:
